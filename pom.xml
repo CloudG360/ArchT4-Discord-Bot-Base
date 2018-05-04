@@ -18,7 +18,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>archt3.bot.Main</mainClass>
+                            <mainClass>main.java.Main</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
@@ -37,7 +37,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>fully.qualified.MainClass</mainClass>
+                            <mainClass>main.java.Main</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>
@@ -65,7 +65,7 @@
                             <goal>shade</goal>
                         </goals>
                         <configuration>
-                            <finalName>tobi</finalName>
+                            <finalName>ArchT4</finalName>
 
                         </configuration>
                     </execution>

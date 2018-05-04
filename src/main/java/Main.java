@@ -13,7 +13,14 @@ import java.io.Reader;
 
 public class Main {
 
-    public static void Main(String args[]){
+    private static Resources resources;
+
+    public static Resources getResources(){
+        return resources;
+    }
+
+    public static void main(String args[]){
+        resources = new Resources();
 
         //Bot Config
         if(new File("botconfig.txt").exists()) {
@@ -21,8 +28,20 @@ public class Main {
 
             try {
                 Reader reader = new FileReader(file);
+                BufferedReader bufferedReader = new BufferedReader(reader);
+
+                String line = "";
+
+                while((line = bufferedReader.readLine()) != null) {
+                    String[] configEntry = line.split("=");
+                    getResources().botAdministratorConfig.put(configEntry[0], configEntry[1]);
+                }
+
+                bufferedReader.close();
+
             } catch (Exception err){
-                System.out.println("CONFIG ACCESS ERROR - SHUTTING DOWN");
+                System.out.println("CONFIG ACCESS ERROR - SHUTTING DOWN:\n");
+                err.printStackTrace();
                 System.exit(2);
             }
         } else {
@@ -31,10 +50,10 @@ public class Main {
         }
         //JDA API - Bot building.
         JDABuilder jdab = new JDABuilder(AccountType.BOT);
-        jdab.setToken("-");
+        jdab.setToken(getResources().botAdministratorConfig.get("token"));
         jdab.setAutoReconnect(true);
-        jdab.setStatus(OnlineStatus.ONLINE);
-        jdab.setGame(Game.watching("Based on ArchT4"));
+        jdab.setStatus(getResources().onlineStatus.get(getResources().botAdministratorConfig.get("online-status")));
+        jdab.setGame(Game.playing(getResources().botAdministratorConfig.get("motd")));
         try{
             jdab.buildBlocking();
         } catch (Exception err){
