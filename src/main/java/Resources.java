@@ -21,9 +21,13 @@ public class Resources {
 
     public CoreService coreService;
 
+    public String prefix;
+
 
     public Resources(){
         botAdministratorConfig = new HashMap<String, String>();
+
+        prefix = "!";
 
         onlineStatus = new HashMap<>();
         onlineStatus.put("ONLINE", OnlineStatus.ONLINE);

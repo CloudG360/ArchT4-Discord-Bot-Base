@@ -24,6 +24,23 @@ public class CoreService extends ListenerAdapter {
     @Override
     public void onGuildMessageReceived(GuildMessageReceivedEvent event) {
 
+        SendDebugToHome("Message Recieved!", event.getMessage().getContentRaw(), "-");
+
+        for(CommandService cmdS:Main.getResources().commandServices){
+            if(cmdS.isLookingForRequests &! cmdS.isInUse){
+                SendDebugToHome("Using Reusable Thread", "Using thread CommandService#"+Main.getResources().commandServices.indexOf(cmdS), "-");
+                cmdS.queueAction(event.getMessage());
+                return;
+            }
+        }
+
+        CommandService cmdServiceNew = new CommandService(false);
+        cmdServiceNew.start();
+        SendDebugToHome("Started Thread","Started a new command service - CommandService#"+Main.getResources().commandServices.indexOf(cmdServiceNew),"-");
+        cmdServiceNew.queueAction(event.getMessage());
+        SendDebugToHome("Finished Queueing Service","Queue Process complete on thread CommandService#"+Main.getResources().commandServices.indexOf(cmdServiceNew),"-");
+
+
     }
 
     @Override
