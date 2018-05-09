@@ -11,86 +11,26 @@ import java.util.*;
 
 public class CommandService extends Thread {
 
-    public boolean isForcedActive;
-    public boolean isInUse;
+    public List<Message> queuedItems;
 
-    public boolean isLookingForRequests;
-
-    public List<Map<String, Object>> queuedItems;
-
-    public CommandService(boolean forceActivation){
-        isInUse = false;
-        isForcedActive = forceActivation;
-        isLookingForRequests = false;
-
-        queuedItems = new ArrayList<Map<String, Object>>();
-
+    public CommandService(){
         Main.getResources().commandServices.add(this);
+        queuedItems = new ArrayList<Message>();
     }
 
-    public void queueAction(Message message) {
-        if (message.getContentRaw().toLowerCase().startsWith(Main.getResources().prefix)){
-                Map<String, Object> queueableAction = new HashMap<String, Object>();
+    public void queueTask(Message message){
 
-            queueableAction.put("Message", message);
-
-            queuedItems.add(queueableAction);
-
-            if (!isLookingForRequests && !isInUse) {
-                processCommand();
-            }
-        }
     }
 
     @Override
     public void run() {
-
-        waitForRequest();
-
-    }
-
-    private void waitForRequest(){
-        isLookingForRequests = true;
-
-        int tries = 0;
-        Main.getResources().coreService.SendDebugToHome("Awaiting Request","Awaiting request on thread. - CommandService#"+Main.getResources().commandServices.indexOf(this),"-");
-
-        while(queuedItems.size() < 1){
-
-            if(tries < 30){
-                tries++;
-                try {
-                    synchronized (this) {
-                        this.wait(1000);
-                    }
-                } catch (Exception err){
-                    Main.getResources().coreService.SendErrorToHome("Command Queue Error", "Unable to ", "CommandProcessor#" + Main.getResources().commandServices.indexOf(this));
-                    return;
-                }
-            } else {
-                Main.getResources().coreService.SendDebugToHome("Closing Thread.", "Closing Thread due to lack of activity.", "CommandProcessor#" + Main.getResources().commandServices.indexOf(this));
-                this.interrupt();
-                return;
-            }
-
-        }
-
-        isLookingForRequests=false;
-        Main.getResources().coreService.SendDebugToHome("Processing command","Awaiting request on thread. - CommandService#"+Main.getResources().commandServices.indexOf(this),"-");
         processCommand();
     }
 
     private void processCommand(){
-        Map<String, Object> nextAction = queuedItems.get(0);
 
-        Message message;
 
-        try{
-            message = ((Message) nextAction.get("Message"));
-        } catch (Exception err){
-            Main.getResources().coreService.SendDebugToHome("Failed data request on Thread", "An error occured while requesting the 'message' data from the queue.", "CommandProcessor#" + Main.getResources().commandServices.indexOf(this));
-            return;
-        }
+        Message message = queuedItems.get(0);
 
         Main.getResources().coreService.SendDebugToHome("Command Recieved!", "Identified as: " + message.getContentRaw().toLowerCase().split(" ")[0], "CommandProcessor#" + Main.getResources().commandServices.indexOf(this));
 
@@ -122,12 +62,12 @@ public class CommandService extends Thread {
                 eBuildService.setTitle("Bot Command Services:").setDescription("Here's a list of the current threads running.");
                 eBuildService.setImage(Main.getResources().bot.getSelfUser().getAvatarUrl());
                 for(CommandService cmdServ:Main.getResources().commandServices){
-                    eBuildService.addField("CommandService#"+Main.getResources().commandServices.indexOf(cmdServ), "isLookingForRequests="+String.valueOf(cmdServ.isLookingForRequests)+"|"+"isInUse="+String.valueOf(cmdServ.isInUse)+"|"+"queuedItems.size()="+String.valueOf(cmdServ.queuedItems.size()), true);
+                    eBuildService.addField("CommandService#"+Main.getResources().commandServices.indexOf(cmdServ), "Currently Active", true);
                 }
                 message.getTextChannel().sendMessage(eBuildService.build()).queue();
 
             case "!occupy":
-                while(isInUse){
+                while(true){
                     try {
                         synchronized (this) {
                             this.wait(1000);
@@ -137,11 +77,9 @@ public class CommandService extends Thread {
                         return;
                     }
                 }
-                break;
         }
 
         queuedItems.remove(0);
-        waitForRequest();
 
     }
 
