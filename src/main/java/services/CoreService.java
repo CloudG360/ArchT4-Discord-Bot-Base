@@ -23,12 +23,12 @@ public class CoreService extends ListenerAdapter {
 
     @Override
     public void onGuildMessageReceived(GuildMessageReceivedEvent event) {
-
-        CommandService cmdServiceNew = new CommandService();
-        cmdServiceNew.queueTask(event.getMessage());
-        cmdServiceNew.start();
-        SendDebugToHome("Started Thread","Started a new command service - CommandService#"+Main.getResources().commandServices.indexOf(cmdServiceNew),"-");
-
+        if(event.getMessage().getContentRaw().startsWith(Main.getResources().prefix)) {
+            CommandService cmdServiceNew = new CommandService();
+            cmdServiceNew.queueTask(event.getMessage());
+            cmdServiceNew.start();
+            SendDebugToHome("Started Thread", "Started a new command service - CommandService#" + Main.getResources().commandServices.indexOf(cmdServiceNew), "-");
+        }
     }
 
     @Override

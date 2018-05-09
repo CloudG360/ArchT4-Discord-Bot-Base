@@ -11,15 +11,14 @@ import java.util.*;
 
 public class CommandService extends Thread {
 
-    public List<Message> queuedItems;
+    public Message queuedItem;
 
     public CommandService(){
         Main.getResources().commandServices.add(this);
-        queuedItems = new ArrayList<Message>();
     }
 
     public void queueTask(Message message){
-
+        queuedItem=message;
     }
 
     @Override
@@ -30,7 +29,7 @@ public class CommandService extends Thread {
     private void processCommand(){
 
 
-        Message message = queuedItems.get(0);
+        Message message = queuedItem;
 
         Main.getResources().coreService.SendDebugToHome("Command Recieved!", "Identified as: " + message.getContentRaw().toLowerCase().split(" ")[0], "CommandProcessor#" + Main.getResources().commandServices.indexOf(this));
 
@@ -78,8 +77,6 @@ public class CommandService extends Thread {
                     }
                 }
         }
-
-        queuedItems.remove(0);
 
     }
 
