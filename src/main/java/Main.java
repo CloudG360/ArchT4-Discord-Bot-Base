@@ -1,5 +1,9 @@
 package main.java;
 
+import main.java.Commands.CommandBotInfo;
+import main.java.Commands.CommandDM;
+import main.java.Commands.CommandOccupyThread;
+import main.java.Commands.CommandServiceList;
 import main.java.services.CoreService;
 import net.dv8tion.jda.core.*;
 import net.dv8tion.jda.core.entities.Game;
@@ -61,6 +65,15 @@ public class Main {
         } catch (Exception err){
             System.out.println("An error occured during the connection between the API and the bot.");
         }
+
+        //----Commands----
+        getResources().addCommand(new CommandBotInfo("botinfo","!botinfo"));
+        getResources().addCommand(new CommandOccupyThread("occupy","!occupy"));
+        getResources().addCommand(new CommandServiceList("services","!services"));
+        getResources().addCommand(new CommandDM("dmuser","!dmuser <@user> <Title> -Cut- <Description>"));
+
+        //----Databases----
+
 
         getResources().coreService.SendInfoToHome("Launched Bot with 0 errors.", "Launched and set up the bot. Enable Debug mode in the config for more info.", "Main Thread#0 (Launch Thread)");
 

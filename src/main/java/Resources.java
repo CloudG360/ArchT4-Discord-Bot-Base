@@ -1,5 +1,6 @@
 package main.java;
 
+import main.java.Commands.CommandBase;
 import main.java.services.CommandService;
 import main.java.services.CoreService;
 import net.dv8tion.jda.core.JDA;
@@ -18,6 +19,7 @@ public class Resources {
     public Map<String, OnlineStatus> onlineStatus;
 
     public List<CommandService> commandServices;
+    public List<CommandBase> commands;
 
     public CoreService coreService;
 
@@ -36,8 +38,13 @@ public class Resources {
         onlineStatus.put("OFFLINE", OnlineStatus.INVISIBLE);
 
         commandServices  = new ArrayList<>();
+        commands  = new ArrayList<>();
 
         coreService = new CoreService();
+    }
+
+    public void addCommand(CommandBase command){
+        commands.add(command);
     }
 
 }
