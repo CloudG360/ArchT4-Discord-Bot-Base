@@ -91,6 +91,8 @@ public class Main {
 
             getResources().bot.getTextChannelById(getResources().botAdministratorConfig.get("home-logs")).sendMessage(builder.build()).queue();
         }
+
+        getResources().prefix = getResources().botAdministratorConfig.get("prefix");
     }
 
 }
