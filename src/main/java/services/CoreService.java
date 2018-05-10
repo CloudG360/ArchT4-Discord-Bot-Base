@@ -73,4 +73,9 @@ public class CoreService extends ListenerAdapter {
         }
     }
 
+    public void SendEmbedToHome(MessageEmbed embed){
+
+        Main.getResources().bot.getTextChannelById(Main.getResources().botAdministratorConfig.get("home-logs")).sendMessage(embed).queue();
+
+    }
 }
