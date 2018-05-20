@@ -3,6 +3,8 @@ package main.java.services;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import main.java.Main;
+import main.java.Resources;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -12,6 +14,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DataService {
+
+    public void setServerData(String serverID, String parentPath, String varName, Object data){
+        Gson gson = new Gson();
+
+        JsonObject loc = requestServerData(serverID, "");
+
+        JsonElement lastObj = loc;
+
+        try{
+            for(String pathSplit:parentPath.split(".")){
+                lastObj = lastObj.getAsJsonObject().get(pathSplit);
+                lastObj.getAsJsonObject().add(varName, gson.toJsonTree(data));
+            }
+        } catch (Exception err){
+            Main.getResources().coreService.SendErrorToHome("DATABASE I/O ERROR", "Unable to write to database.", "DataService");
+            return;
+        }
+
+    }
 
     private JsonObject requestServerData(String serverID, String path){
         /*
@@ -67,13 +88,13 @@ public class DataService {
         return string;
     }
 
-    public List<Object> requestListFromServer(String serverID, String path){
+    public List<JsonElement> requestListFromServer(String serverID, String path){
         JsonObject jsonobj = requestServerData(serverID, path);
-        List<Object> list = null;
+        List<JsonElement> list = null;
         try {
             list = new ArrayList<>();
             for (int i = 0; i < jsonobj.getAsJsonArray().size(); i++) {
-                list.add(((Object)jsonobj.getAsJsonArray().get(i)));
+                list.add(jsonobj.getAsJsonArray().get(i));
             }
         } catch (Exception err){
             return null;
