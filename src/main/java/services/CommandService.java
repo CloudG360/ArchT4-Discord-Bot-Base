@@ -41,6 +41,8 @@ public class CommandService extends Thread {
             String commandPrefixCombined = Main.getResources().prefix+commandB.getInfo().get("command");
             if(commandPrefixCombined.equals(commandStart)){
                 commandB.execute(message);
+                Main.getResources().commandServices.remove(this);
+                this.interrupt();
                 return;
             }
         }
