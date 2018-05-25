@@ -22,7 +22,11 @@ public class CommandBotInfo extends CommandBase
         eBuild.setImage(Main.getResources().bot.getSelfUser().getAvatarUrl());
         eBuild.addField("Launch Config", "-----------", false);
         for (String configSet: new ArrayList<String>(Main.getResources().botAdministratorConfig.keySet())) {
-            eBuild.addField(configSet, Main.getResources().botAdministratorConfig.get(configSet), true);
+            if(configSet.startsWith("#")) {
+                eBuild.addField(configSet, "#", true);
+            } else {
+                eBuild.addField(configSet, Main.getResources().botAdministratorConfig.get(configSet), true);
+            }
         }
         eBuild.addField("Bot information", "-----------", false);
         eBuild.addField("Identification", Main.getResources().bot.getSelfUser().getName()+"#"+Main.getResources().bot.getSelfUser().getDiscriminator(), true);
