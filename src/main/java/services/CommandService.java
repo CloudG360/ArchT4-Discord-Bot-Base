@@ -44,6 +44,8 @@ public class CommandService extends Thread {
                 Main.getResources().commandServices.remove(this);
                 this.interrupt();
                 return;
+
+
             }
         }
 
