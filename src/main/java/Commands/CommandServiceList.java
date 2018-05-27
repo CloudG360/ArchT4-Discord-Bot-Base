@@ -16,7 +16,7 @@ public class CommandServiceList extends CommandBase
     }
 
     @Override
-    public boolean execute(Message message){
+    public boolean execute(Message message, CommandService service){
         EmbedBuilder eBuild = new EmbedBuilder();
         eBuild.setTitle("Service List").setDescription("Here's the list of currently active services");
         eBuild.setImage(Main.getResources().bot.getSelfUser().getAvatarUrl());

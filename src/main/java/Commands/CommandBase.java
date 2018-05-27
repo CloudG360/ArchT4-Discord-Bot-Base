@@ -21,7 +21,7 @@ public abstract class CommandBase
         this.description = descriptionIn;
     }
 
-    public boolean execute(Message message){
+    public boolean execute(Message message, CommandService service){
 
         message.getTextChannel().sendMessage(new EmbedBuilder().setTitle("Pong!").setDescription("Took "+Main.getResources().bot.getPing()+"ms").build()).queue();
 

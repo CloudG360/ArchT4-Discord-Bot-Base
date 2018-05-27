@@ -40,7 +40,7 @@ public class CommandService extends Thread {
         for(CommandBase commandB:Main.getResources().commands){
             String commandPrefixCombined = Main.getResources().prefix+commandB.getInfo().get("command");
             if(commandPrefixCombined.equals(commandStart)){
-                commandB.execute(message);
+                commandB.execute(message, this);
                 Main.getResources().commandServices.remove(this);
                 this.interrupt();
                 return;

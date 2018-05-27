@@ -1,6 +1,7 @@
 package main.java.Commands;
 
 import main.java.Main;
+import main.java.services.CommandService;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageEmbed;
@@ -15,7 +16,7 @@ public class CommandDM extends CommandBase
     }
 
     @Override
-    public boolean execute(Message message){
+    public boolean execute(Message message, CommandService service){
 
         String[] content = message.getContentRaw().split(" ", 3);
         String[] contentSplit = content[2].split("-cut-", 3);

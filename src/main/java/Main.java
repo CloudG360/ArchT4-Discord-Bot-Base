@@ -1,9 +1,6 @@
 package main.java;
 
-import main.java.Commands.CommandBotInfo;
-import main.java.Commands.CommandDM;
-import main.java.Commands.CommandOccupyThread;
-import main.java.Commands.CommandServiceList;
+import main.java.Commands.*;
 import main.java.services.CoreService;
 import net.dv8tion.jda.core.*;
 import net.dv8tion.jda.core.entities.Game;
@@ -71,6 +68,7 @@ public class Main {
         getResources().addCommand(new CommandOccupyThread("occupy","!occupy"));
         getResources().addCommand(new CommandServiceList("services","!services"));
         getResources().addCommand(new CommandDM("dmuser","!dmuser <@user> <Title> -Cut- <Description>"));
+        getResources().addCommand(new CommandKillSafe("shutdown", "!shutdown"));
 
         //----Databases----
 
