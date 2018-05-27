@@ -3,11 +3,13 @@ package main.java.Commands;
 import main.java.Main;
 import main.java.services.CommandService;
 import net.dv8tion.jda.core.EmbedBuilder;
+import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageEmbed;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.List;
 
 public class CommandBotInfo extends CommandBase
 {
@@ -18,6 +20,14 @@ public class CommandBotInfo extends CommandBase
 
     @Override
     public boolean execute(Message message, CommandService service){
+
+        java.util.List<String> botMods = (List<String>) Main.getResources().botAdministratorConfig.get("bot-maintainers");
+
+        if(!(botMods.contains(message.getAuthor().getId())) || !(message.getGuild().getMember(message.getAuthor()).hasPermission(Permission.MESSAGE_MANAGE))){
+            message.getTextChannel().sendMessage(new EmbedBuilder().setTitle("Permission Error").setDescription("This command requires the permission 'MESSAGE_MANAGE'").setImage("https://emojipedia-us.s3.amazonaws.com/thumbs/120/twitter/139/warning-sign_26a0.png").setColor(Color.ORANGE).build()).queue();
+            return false;
+        }
+
         EmbedBuilder eBuild = new EmbedBuilder();
         eBuild.setTitle("Bot information.").setDescription("Here's the bot's current configurations and data:");
         eBuild.setImage(Main.getResources().bot.getSelfUser().getAvatarUrl());

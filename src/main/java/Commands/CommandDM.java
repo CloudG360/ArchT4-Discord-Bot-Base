@@ -3,10 +3,12 @@ package main.java.Commands;
 import main.java.Main;
 import main.java.services.CommandService;
 import net.dv8tion.jda.core.EmbedBuilder;
+import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageEmbed;
 
 import java.awt.*;
+import java.util.List;
 
 public class CommandDM extends CommandBase
 {
@@ -17,6 +19,13 @@ public class CommandDM extends CommandBase
 
     @Override
     public boolean execute(Message message, CommandService service){
+
+        java.util.List<String> botMods = (List<String>) Main.getResources().botAdministratorConfig.get("bot-maintainers");
+
+        if(!(botMods.contains(message.getAuthor().getId())) || !(message.getGuild().getMember(message.getAuthor()).hasPermission(Permission.MANAGE_SERVER))){
+            message.getTextChannel().sendMessage(new EmbedBuilder().setTitle("Permission Error").setDescription("This command requires the permission 'MANAGE_SERVER'").setImage("https://emojipedia-us.s3.amazonaws.com/thumbs/120/twitter/139/warning-sign_26a0.png").setColor(Color.ORANGE).build()).queue();
+            return false;
+        }
 
         String[] content = message.getContentRaw().split(" ", 3);
         String[] contentSplit = content[2].split("-cut-", 3);
