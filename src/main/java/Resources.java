@@ -15,7 +15,7 @@ public class Resources {
 
     public JDA bot;
 
-    public Map<String, String> botAdministratorConfig;
+    public Map<String, Object> botAdministratorConfig;
     public Map<String, OnlineStatus> onlineStatus;
 
     public List<CommandService> commandServices;
@@ -27,7 +27,7 @@ public class Resources {
 
 
     public Resources(){
-        botAdministratorConfig = new HashMap<String, String>();
+        botAdministratorConfig = new HashMap<String, Object>();
 
         prefix = "!";
 

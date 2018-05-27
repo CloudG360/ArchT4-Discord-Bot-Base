@@ -33,8 +33,8 @@ public class DataService {
 
     public MysqlDataSource getDataSource(){
         MysqlDataSource dataSource = new MysqlDataSource();
-        dataSource.setUser(Main.getResources().botAdministratorConfig.get("sql-username"));
-        dataSource.setPassword(Main.getResources().botAdministratorConfig.get("#sql-password"));
+        dataSource.setUser(Main.getResources().botAdministratorConfig.get("sql-username").toString());
+        dataSource.setPassword(Main.getResources().botAdministratorConfig.get("#sql-password").toString());
         try {
             dataSource.setAutoReconnect(true);
         } catch (Exception err){
@@ -42,7 +42,7 @@ public class DataService {
         }
 
 
-        dataSource.setServerName(Main.getResources().botAdministratorConfig.get("sql-servername"));
+        dataSource.setServerName(Main.getResources().botAdministratorConfig.get("sql-servername").toString());
         return dataSource;
     }
 

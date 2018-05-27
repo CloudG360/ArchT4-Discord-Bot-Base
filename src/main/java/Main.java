@@ -12,6 +12,7 @@ import java.io.FileReader;
 import java.io.Reader;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Main {
 
@@ -36,7 +37,22 @@ public class Main {
 
                 while((line = bufferedReader.readLine()) != null) {
                     String[] configEntry = line.split("=");
-                    getResources().botAdministratorConfig.put(configEntry[0], configEntry[1]);
+
+                    if (configEntry[1].startsWith("[List]")) {
+                        //List
+
+                        String[] configList = configEntry[1].substring(6).split(",");
+
+                        List<String> data = new ArrayList<>();
+                        for(String strE : configList){
+                            data.add(strE);
+                        }
+
+                        getResources().botAdministratorConfig.put(configEntry[0], data);
+
+                    } else{
+                        getResources().botAdministratorConfig.put(configEntry[0], configEntry[1]);
+                    }
                 }
 
                 bufferedReader.close();
@@ -52,10 +68,10 @@ public class Main {
         }
         //JDA API - Bot building.
         JDABuilder jdab = new JDABuilder(AccountType.BOT);
-        jdab.setToken(getResources().botAdministratorConfig.get("#token"));
+        jdab.setToken(getResources().botAdministratorConfig.get("#token").toString());
         jdab.setAutoReconnect(true);
-        jdab.setStatus(getResources().onlineStatus.get(getResources().botAdministratorConfig.get("online-status")));
-        jdab.setGame(Game.playing(getResources().botAdministratorConfig.get("motd")));
+        jdab.setStatus(getResources().onlineStatus.get(getResources().botAdministratorConfig.get("online-status").toString()));
+        jdab.setGame(Game.playing(getResources().botAdministratorConfig.get("motd").toString()));
         jdab.addEventListener(getResources().coreService);
         try{
             getResources().bot = jdab.buildBlocking();
@@ -82,15 +98,15 @@ public class Main {
                 builder.addField(key + "-","[HIDDEN]", true);
 
             } else {
-                builder.addField(key + "-",getResources().botAdministratorConfig.get(key), true);}
+                builder.addField(key + "-",getResources().botAdministratorConfig.get(key).toString(), true);}
         }
 
         if(getResources().botAdministratorConfig.get("debug").equals("true")){
 
-            getResources().bot.getTextChannelById(getResources().botAdministratorConfig.get("home-logs")).sendMessage(builder.build()).queue();
+            getResources().bot.getTextChannelById(getResources().botAdministratorConfig.get("home-logs").toString()).sendMessage(builder.build()).queue();
         }
 
-        getResources().prefix = getResources().botAdministratorConfig.get("prefix");
+        getResources().prefix = getResources().botAdministratorConfig.get("prefix").toString();
     }
 
 }

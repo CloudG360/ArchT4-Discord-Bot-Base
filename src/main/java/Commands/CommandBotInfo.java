@@ -26,7 +26,7 @@ public class CommandBotInfo extends CommandBase
             if(configSet.startsWith("#")) {
                 eBuild.addField(configSet, "#", true);
             } else {
-                eBuild.addField(configSet, Main.getResources().botAdministratorConfig.get(configSet), true);
+                eBuild.addField(configSet, Main.getResources().botAdministratorConfig.get(configSet).toString(), true);
             }
         }
         eBuild.addField("Bot information", "-----------", false);
