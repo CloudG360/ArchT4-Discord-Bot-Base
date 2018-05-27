@@ -1,26 +1,11 @@
 package main.java.services;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import com.mysql.cj.jdbc.MysqlDataSource;
-import com.sun.org.apache.xerces.internal.xs.datatypes.ObjectList;
-import main.java.Main;
-import main.java.Resources;
-import org.json.JSONObject;
 
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.sql.DataSource;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
+import main.java.Main;
+
 import java.sql.Connection;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+
 
 public class DataService {
 
