@@ -22,7 +22,7 @@ public class CommandDM extends CommandBase
 
         java.util.List<String> botMods = (List<String>) Main.getResources().botAdministratorConfig.get("bot-maintainers");
 
-        if(!(botMods.contains(message.getAuthor().getId())) || !(message.getGuild().getMember(message.getAuthor()).hasPermission(Permission.MANAGE_SERVER))){
+        if(!(message.getGuild().getMember(message.getAuthor()).hasPermission(Permission.MANAGE_SERVER))){
             message.getTextChannel().sendMessage(new EmbedBuilder().setTitle("Permission Error").setDescription("This command requires the permission 'MANAGE_SERVER'").setImage("https://emojipedia-us.s3.amazonaws.com/thumbs/120/twitter/139/warning-sign_26a0.png").setColor(Color.ORANGE).build()).queue();
             return false;
         }

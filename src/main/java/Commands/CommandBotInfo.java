@@ -23,7 +23,7 @@ public class CommandBotInfo extends CommandBase
 
         java.util.List<String> botMods = (List<String>) Main.getResources().botAdministratorConfig.get("bot-maintainers");
 
-        if(!(botMods.contains(message.getAuthor().getId())) || !(message.getGuild().getMember(message.getAuthor()).hasPermission(Permission.MESSAGE_MANAGE))){
+        if(!(message.getGuild().getMember(message.getAuthor()).hasPermission(Permission.MESSAGE_MANAGE))){
             message.getTextChannel().sendMessage(new EmbedBuilder().setTitle("Permission Error").setDescription("This command requires the permission 'MESSAGE_MANAGE'").setImage("https://emojipedia-us.s3.amazonaws.com/thumbs/120/twitter/139/warning-sign_26a0.png").setColor(Color.ORANGE).build()).queue();
             return false;
         }
