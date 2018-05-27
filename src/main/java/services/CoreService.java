@@ -45,7 +45,7 @@ public class CoreService extends ListenerAdapter {
         EmbedBuilder embed = new EmbedBuilder();
 
         MessageEmbed result = embed.setTitle("ERROR: "+title).setDescription(content).setFooter(location + " | " + LocalDateTime.now().toString(), "https://imgur.com/mfj5mmJ.png").setColor(Color.red).build();
-        Main.getResources().bot.getTextChannelById(Main.getResources().botAdministratorConfig.get("home-logs")).sendMessage(result).queue();
+        Main.getResources().bot.getTextChannelById(Main.getResources().botAdministratorConfig.get("home-logs").toString()).sendMessage(result).queue();
 
     }
 
@@ -53,7 +53,7 @@ public class CoreService extends ListenerAdapter {
         EmbedBuilder embed = new EmbedBuilder();
 
         MessageEmbed result = embed.setTitle(title).setDescription(content).setFooter(location + " | " + LocalDateTime.now().toString(), "https://imgur.com/mfj5mmJ.png").setColor(Color.cyan).build();
-        Main.getResources().bot.getTextChannelById(Main.getResources().botAdministratorConfig.get("home-logs")).sendMessage(result).queue();
+        Main.getResources().bot.getTextChannelById(Main.getResources().botAdministratorConfig.get("home-logs").toString()).sendMessage(result).queue();
 
     }
 
@@ -61,7 +61,7 @@ public class CoreService extends ListenerAdapter {
         EmbedBuilder embed = new EmbedBuilder();
 
         MessageEmbed result = embed.setTitle("WARN: "+title).setDescription(content).setFooter(location + " | " + LocalDateTime.now().toString(), "https://imgur.com/mfj5mmJ.png").setColor(Color.yellow).build();
-        Main.getResources().bot.getTextChannelById(Main.getResources().botAdministratorConfig.get("home-logs")).sendMessage(result).queue();
+        Main.getResources().bot.getTextChannelById(Main.getResources().botAdministratorConfig.get("home-logs").toString()).sendMessage(result).queue();
 
     }
     public void SendDebugToHome(String title, String content, String location){
@@ -69,13 +69,13 @@ public class CoreService extends ListenerAdapter {
             EmbedBuilder embed = new EmbedBuilder();
 
             MessageEmbed result = embed.setTitle("DEBUG: " + title).setDescription(content).setFooter(location + " | " + LocalDateTime.now().toString(), "https://imgur.com/mfj5mmJ.png").setColor(Color.gray).build();
-            Main.getResources().bot.getTextChannelById(Main.getResources().botAdministratorConfig.get("home-logs")).sendMessage(result).queue();
+            Main.getResources().bot.getTextChannelById(Main.getResources().botAdministratorConfig.get("home-logs").toString()).sendMessage(result).queue();
         }
     }
 
     public void SendEmbedToHome(MessageEmbed embed){
 
-        Main.getResources().bot.getTextChannelById(Main.getResources().botAdministratorConfig.get("home-logs")).sendMessage(embed).queue();
+        Main.getResources().bot.getTextChannelById(Main.getResources().botAdministratorConfig.get("home-logs").toString()).sendMessage(embed).queue();
 
     }
 }
