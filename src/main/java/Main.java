@@ -107,6 +107,10 @@ public class Main {
         }
 
         getResources().prefix = getResources().botAdministratorConfig.get("prefix").toString();
+
+        getResources().cacheService.start();
+
+        getResources().isActive = true;
     }
 
 }

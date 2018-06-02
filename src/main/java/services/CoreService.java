@@ -5,6 +5,7 @@ import main.java.Resources;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.audit.ActionType;
 import net.dv8tion.jda.core.audit.AuditLogEntry;
+import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.events.message.guild.GuildMessageDeleteEvent;
 import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
@@ -16,6 +17,7 @@ import java.awt.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Consumer;
 
 public class CoreService extends ListenerAdapter {
@@ -23,11 +25,14 @@ public class CoreService extends ListenerAdapter {
 
     @Override
     public void onGuildMessageReceived(GuildMessageReceivedEvent event) {
-        if(event.getMessage().getContentRaw().startsWith(Main.getResources().prefix)) {
-            CommandService cmdServiceNew = new CommandService();
-            cmdServiceNew.queueTask(event.getMessage());
-            cmdServiceNew.start();
-            SendDebugToHome("Started Thread", "Started a new command service - CommandService#" + Main.getResources().commandServices.indexOf(cmdServiceNew), "-");
+        if(Main.getResources().isActive) {
+            Main.getResources().cacheService.cacheTree.put(event.getMessageId(), event.getMessage());
+            if (event.getMessage().getContentRaw().startsWith(Main.getResources().prefix)) {
+                CommandService cmdServiceNew = new CommandService();
+                cmdServiceNew.queueTask(event.getMessage());
+                cmdServiceNew.start();
+                SendDebugToHome("Started Thread", "Started a new command service - CommandService#" + Main.getResources().commandServices.indexOf(cmdServiceNew), "-");
+            }
         }
     }
 
@@ -36,7 +41,12 @@ public class CoreService extends ListenerAdapter {
 
         AuditLogEntry auditLog = event.getGuild().getAuditLogs().complete().get(1);
 
-        SendInfoToHome("Action 'DELETE'", "Performed in " + event.getChannel().getName() + " - Message Author: " + auditLog.getOptions().keySet() + " - Reason: `" + auditLog.getReason() + "` Message:", "CoreThread#0 - Performed by:" + auditLog.getUser().getAsMention());
+        Message messageHistory = ((Map<String, Message>)Main.getResources().cacheService.cacheTree.get("message-cache")).get(event.getMessageId());
+
+        String AuthorMention = "null";
+        String MessageContenet = "null";
+
+        SendInfoToHome("Action 'DELETE'", "Performed in " + event.getChannel().getName() + " - Message Author: " + messageHistory.getAuthor().getAsMention() + " - Reason: `" + auditLog.getReason() + "` Message:" + messageHistory.getContentRaw(), "CoreThread#0 - Performed by:" + auditLog.getUser().getAsMention());
 
     }
 
@@ -77,5 +87,13 @@ public class CoreService extends ListenerAdapter {
 
         Main.getResources().bot.getTextChannelById(Main.getResources().botAdministratorConfig.get("home-logs").toString()).sendMessage(embed).queue();
 
+    }
+
+    public static String humanReadableByteCount(long bytes, boolean si) {
+        int unit = si ? 1000 : 1024;
+        if (bytes < unit) return bytes + " B";
+        int exp = (int) (Math.log(bytes) / Math.log(unit));
+        String pre = (si ? "kMGTPE" : "KMGTPE").charAt(exp-1) + (si ? "" : "i");
+        return String.format("%.1f %sB", bytes / Math.pow(unit, exp), pre);
     }
 }

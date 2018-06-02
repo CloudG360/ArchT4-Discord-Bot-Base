@@ -1,7 +1,9 @@
 package main.java.Commands;
 
+import com.carrotsearch.sizeof.RamUsageEstimator;
 import main.java.Main;
 import main.java.services.CommandService;
+import main.java.services.CoreService;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.Message;
@@ -43,6 +45,13 @@ public class CommandBotInfo extends CommandBase
         eBuild.addField("Identification", Main.getResources().bot.getSelfUser().getName()+"#"+Main.getResources().bot.getSelfUser().getDiscriminator(), true);
         eBuild.addField("Ping", Main.getResources().bot.getPing()+"ms", true);
         eBuild.addField("Command Count", String.valueOf(Main.getResources().commands.size()), true).setColor(Color.orange);
+
+        String currentByteCount = CoreService.humanReadableByteCount(RamUsageEstimator.sizeOf(Main.getResources().cacheService.cacheTree), true);
+        long currentLimit = Long.parseLong(Main.getResources().botAdministratorConfig.get("cache-byte_limit").toString());
+
+        String convertedLimit = CoreService.humanReadableByteCount(currentLimit,true);
+
+        eBuild.addField("Cache", "Used `"+currentByteCount+"/"+convertedLimit+ "`", true);
 
         message.getTextChannel().sendMessage(eBuild.build()).queue();
         return true;

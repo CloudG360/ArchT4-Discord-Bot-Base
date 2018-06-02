@@ -1,10 +1,12 @@
 package main.java;
 
 import main.java.Commands.CommandBase;
+import main.java.services.CacheService;
 import main.java.services.CommandService;
 import main.java.services.CoreService;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.OnlineStatus;
+import sun.misc.Cache;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,9 +25,13 @@ public class Resources {
 
     public CoreService coreService;
 
+    public CacheService cacheService;
+
     public String prefix;
 
     public int killInitiated;
+
+    public boolean isActive;
 
 
     public Resources(){
@@ -44,7 +50,11 @@ public class Resources {
 
         coreService = new CoreService();
 
+        cacheService = new CacheService();
+
         killInitiated = 0;
+
+        isActive = false;
     }
 
     public void addCommand(CommandBase command){
