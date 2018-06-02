@@ -1,5 +1,6 @@
 package main.java.services;
 
+import main.java.ClassTypes.OfflineMessage;
 import main.java.Main;
 import main.java.Resources;
 import net.dv8tion.jda.core.EmbedBuilder;
@@ -26,7 +27,8 @@ public class CoreService extends ListenerAdapter {
     @Override
     public void onGuildMessageReceived(GuildMessageReceivedEvent event) {
         if(Main.getResources().isActive) {
-            Main.getResources().cacheService.cacheTree.put(event.getMessageId(), event.getMessage());
+
+            ((Map<String, OfflineMessage>)Main.getResources().cacheService.cacheTree.get("message-cache")).put(event.getMessageId(), new OfflineMessage(event.getMessage().getAuthor(), event.getMessage().getMentionedRoles(), event.getMessage().getContentRaw(), event.getChannel()));
             if (event.getMessage().getContentRaw().startsWith(Main.getResources().prefix)) {
                 CommandService cmdServiceNew = new CommandService();
                 cmdServiceNew.queueTask(event.getMessage());
@@ -41,12 +43,12 @@ public class CoreService extends ListenerAdapter {
 
         AuditLogEntry auditLog = event.getGuild().getAuditLogs().complete().get(1);
 
-        Message messageHistory = ((Map<String, Message>)Main.getResources().cacheService.cacheTree.get("message-cache")).get(event.getMessageId());
+        OfflineMessage messageHistory = ((Map<String, OfflineMessage>)Main.getResources().cacheService.cacheTree.get("message-cache")).get(event.getMessageId());
 
         String AuthorMention = "null";
         String MessageContenet = "null";
 
-        SendInfoToHome("Action 'DELETE'", "Performed in " + event.getChannel().getName() + " - Message Author: " + messageHistory.getAuthor().getAsMention() + " - Reason: `" + auditLog.getReason() + "` Message:" + messageHistory.getContentRaw(), "CoreThread#0 - Performed by:" + auditLog.getUser().getAsMention());
+        SendInfoToHome("Action 'DELETE'", "Performed in " + event.getChannel().getName() + " - Message Author: " + messageHistory.getUser().getAsMention() + " - Reason: `" + auditLog.getReason() + "` Message:" + messageHistory.getMessageRaw(), "CoreThread#0 - Performed by:" + auditLog.getUser().getAsMention());
 
     }
 

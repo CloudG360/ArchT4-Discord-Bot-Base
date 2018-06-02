@@ -1,5 +1,6 @@
 package main.java.services;
 
+import main.java.ClassTypes.OfflineMessage;
 import main.java.Main;
 import net.dv8tion.jda.core.entities.Message;
 
@@ -20,7 +21,7 @@ public class CacheService extends Thread{
 
     public void setupCaches(){
         //CacheTree Children
-        cacheTree.put("message-cache", new HashMap<String, Message>());
+        cacheTree.put("message-cache", new HashMap<String, OfflineMessage>());
     }
 
     @Override
