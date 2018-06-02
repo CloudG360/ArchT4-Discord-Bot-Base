@@ -4,6 +4,7 @@ import main.java.Main;
 import main.java.services.CommandService;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.Permission;
+import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageEmbed;
 
@@ -36,7 +37,20 @@ public class CommandDM extends CommandBase
 
         Main.getResources().coreService.SendEmbedToHome(embed);
 
-        message.getMentionedUsers().get(0).openPrivateChannel().complete().sendMessage(embed).queue();
+        try {
+            if (message.getMentionedUsers().size() > 0) {
+                message.getMentionedUsers().get(0).openPrivateChannel().complete().sendMessage(embed).queue();
+            }
+
+            if (message.getMentionedRoles().size() > 0) {
+                for (Member member : message.getGuild().getMembersWithRoles(message.getMentionedRoles().get(0))) {
+                    member.getUser().openPrivateChannel().complete().sendMessage(embed).queue();
+                }
+            }
+        } catch (Exception err){
+            message.getTextChannel().sendMessage(new EmbedBuilder().setTitle("⚠ Command Error!").setDescription("Unable to open DM with User(s)").setColor(Color.red).setImage(Main.getResources().bot.getSelfUser().getAvatarUrl()).build()).queue();
+
+        }
 
         return true;
     }

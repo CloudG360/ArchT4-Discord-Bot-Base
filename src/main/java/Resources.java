@@ -25,6 +25,8 @@ public class Resources {
 
     public String prefix;
 
+    public int killInitiated;
+
 
     public Resources(){
         botAdministratorConfig = new HashMap<String, Object>();
@@ -41,6 +43,8 @@ public class Resources {
         commands  = new ArrayList<>();
 
         coreService = new CoreService();
+
+        killInitiated = 0;
     }
 
     public void addCommand(CommandBase command){

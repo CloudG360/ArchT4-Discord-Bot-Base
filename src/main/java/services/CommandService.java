@@ -41,8 +41,10 @@ public class CommandService extends Thread {
             String commandPrefixCombined = Main.getResources().prefix+commandB.getInfo().get("command");
             if(commandPrefixCombined.equals(commandStart)){
                 commandB.execute(message, this);
-                Main.getResources().commandServices.remove(this);
-                this.interrupt();
+                if(Main.getResources().killInitiated == 0) {
+                    Main.getResources().commandServices.remove(this);
+                    this.interrupt();
+                }
                 return;
 
 
@@ -51,6 +53,13 @@ public class CommandService extends Thread {
 
         message.getTextChannel().sendMessage(new EmbedBuilder().setTitle("⚠ Command Error!").setDescription("Command not recognised.").setColor(Color.red).setImage(Main.getResources().bot.getSelfUser().getAvatarUrl()).build()).queue();
 
+    }
+
+    public void discardSelf(){
+        Main.getResources().coreService.SendDebugToHome("Point Reached", "#0003", "CommandKillSafe");
+        Main.getResources().commandServices.remove(this);
+        Main.getResources().coreService.SendDebugToHome("Point Reached", "#0004", "CommandKillSafe");
+        this.interrupt();
     }
 
 

@@ -36,7 +36,7 @@ public class CoreService extends ListenerAdapter {
 
         AuditLogEntry auditLog = event.getGuild().getAuditLogs().complete().get(1);
 
-        SendInfoToHome("Action 'DELETE'", "Performed in " + event.getChannel().getName() + " by " + auditLog.getUser().getAsMention() + " - `" + auditLog.getReason() + "`", "CoreThread#0");
+        SendInfoToHome("Action 'DELETE'", "Performed in " + event.getChannel().getName() + " - Message Author: " + auditLog.getOptions().keySet() + " - Reason: `" + auditLog.getReason() + "` Message:", "CoreThread#0 - Performed by:" + auditLog.getUser().getAsMention());
 
     }
 

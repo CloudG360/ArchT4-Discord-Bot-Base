@@ -7,6 +7,7 @@ import net.dv8tion.jda.core.entities.Message;
 
 import java.awt.*;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class CommandKillSafe extends CommandBase
 {
@@ -25,15 +26,9 @@ public class CommandKillSafe extends CommandBase
             return false;
         }
 
-        message.getTextChannel().sendMessage(new EmbedBuilder().setColor(Color.red).setTitle("Killing Systems").setDescription("Killing Bot Systems in mode: [SAFE MODE]").build()).queue();
+        Main.getResources().killInitiated = 1;
 
-        for (CommandService cmdS: Main.getResources().commandServices) {
-            if(cmdS != service) {
-                int position = Main.getResources().commandServices.indexOf(cmdS);
-                cmdS.interrupt();
-                message.getTextChannel().sendMessage(new EmbedBuilder().setColor(Color.gray).setImage("https://emojipedia-us.s3.amazonaws.com/thumbs/120/twitter/139/wastebasket_1f5d1.png").setTitle("Killed CommandService#" + position).setDescription("Killed Service safely.").build()).queue();
-            }
-        }
+        message.getTextChannel().sendMessage(new EmbedBuilder().setColor(Color.red).setTitle("Killing Systems").setDescription("Killing Bot Systems in mode: [SAFE MODE]").build()).queue();
 
         System.exit(0);
 

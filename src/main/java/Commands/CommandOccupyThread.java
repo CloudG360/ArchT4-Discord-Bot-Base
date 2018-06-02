@@ -28,7 +28,7 @@ public class CommandOccupyThread extends CommandBase
             message.getTextChannel().sendMessage(new EmbedBuilder().setTitle("Permission Error").setDescription("This command requires the permission 'CUSTOM_MAINTAINER'").setImage("https://emojipedia-us.s3.amazonaws.com/thumbs/120/twitter/139/warning-sign_26a0.png").setColor(Color.ORANGE).build()).queue();
             return false;
         }
-        while(true){
+        while(Main.getResources().killInitiated == 0){
             try {
                 synchronized (this) {
                     this.wait(1000);
@@ -38,6 +38,7 @@ public class CommandOccupyThread extends CommandBase
                 return false;
             }
         }
+        return true;
     }
 
 }
