@@ -20,6 +20,8 @@ public class RoleColourService extends Thread{
     public RoleColourService(Role role){
         colours = "#f9100c,#ff8800,#fffb1e,#15ff00,#00ffe5,#2a00ff,#d400ff".split(",");
         colourRole = role;
+        this.setName("RoleColourManagerService");
+        Main.getResources().services.add(this);
     }
 
     @Override
@@ -33,6 +35,9 @@ public class RoleColourService extends Thread{
             }
 
         }
+
+        Main.getResources().services.remove(this);
+        this.interrupt();
 
     }
 

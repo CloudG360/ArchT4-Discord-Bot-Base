@@ -33,7 +33,7 @@ public class CoreService extends ListenerAdapter {
                 CommandService cmdServiceNew = new CommandService();
                 cmdServiceNew.queueTask(event.getMessage());
                 cmdServiceNew.start();
-                SendDebugToHome("Started Thread", "Started a new command service - CommandService#" + Main.getResources().commandServices.indexOf(cmdServiceNew), "-");
+                SendDebugToHome("Started Thread", "Started a new command service - CommandService#" + Main.getResources().services.indexOf(cmdServiceNew), "-");
             }
         }
     }

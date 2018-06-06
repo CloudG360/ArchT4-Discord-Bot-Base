@@ -13,6 +13,8 @@ public class CacheFlushService extends Thread{
 
     public CacheFlushService(CacheService service){
         cacheService = service;
+        this.setName("CacheTimedFlushService");
+        Main.getResources().services.add(this);
     }
 
 
@@ -29,6 +31,9 @@ public class CacheFlushService extends Thread{
             } catch (Exception err){
             }
         }
+
+        Main.getResources().services.remove(this);
+        this.interrupt();
     }
 
 

@@ -34,7 +34,7 @@ public class CommandOccupyThread extends CommandBase
                     this.wait(1000);
                 }
             } catch (Exception err){
-                Main.getResources().coreService.SendErrorToHome("Command Execution Error", "An exception occured during the process.", "CommandProcessor#" + Main.getResources().commandServices.indexOf(this));
+                Main.getResources().coreService.SendErrorToHome("Command Execution Error", "An exception occured during the process.", "CommandProcessor#" + Main.getResources().services.indexOf(this));
                 return false;
             }
         }
