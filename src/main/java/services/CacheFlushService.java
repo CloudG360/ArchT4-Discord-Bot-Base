@@ -13,14 +13,15 @@ public class CacheFlushService extends Thread{
 
     public CacheFlushService(CacheService service){
         cacheService = service;
-        this.setName("CacheTimedFlushService");
-        Main.getResources().services.add(this);
     }
 
 
 
     @Override
     public void run(){
+
+        this.setName("CacheTimedFlushService");
+        Main.getResources().services.add(this);
 
         while(Main.getResources().killInitiated == 0){
             try {

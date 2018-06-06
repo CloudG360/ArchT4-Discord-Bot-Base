@@ -16,8 +16,6 @@ public class CommandService extends Thread {
     public Message queuedItem;
 
     public CommandService(){
-        this.setName("CommandService");
-        Main.getResources().services.add(this);
     }
 
     public void queueTask(Message message){
@@ -26,7 +24,8 @@ public class CommandService extends Thread {
 
     @Override
     public void run() {
-
+        this.setName("CommandService");
+        Main.getResources().services.add(this);
         processCommand();
     }
 
