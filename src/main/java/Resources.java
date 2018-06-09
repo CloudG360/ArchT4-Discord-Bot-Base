@@ -1,6 +1,7 @@
 package main.java;
 
 import main.java.Commands.CommandBase;
+import main.java.services.BaseGameService;
 import main.java.services.CacheService;
 import main.java.services.CommandService;
 import main.java.services.CoreService;
@@ -22,6 +23,8 @@ public class Resources {
 
     public List<CommandService> commandServices;
     public List<CommandBase> commands;
+
+    public List<BaseGameService> gameLobbies;
 
     public CoreService coreService;
 
