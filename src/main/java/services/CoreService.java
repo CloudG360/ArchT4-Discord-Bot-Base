@@ -10,6 +10,7 @@ import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.events.message.guild.GuildMessageDeleteEvent;
 import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.core.events.message.guild.react.GuildMessageReactionAddEvent;
 import net.dv8tion.jda.core.hooks.EventListener;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
 import net.dv8tion.jda.core.requests.restaction.pagination.AuditLogPaginationAction;
@@ -50,6 +51,11 @@ public class CoreService extends ListenerAdapter {
 
         SendInfoToHome("Action 'DELETE'", "Performed in " + event.getChannel().getName() + " - Message Author: " + messageHistory.getUser().getAsMention() + " - Reason: `" + auditLog.getReason() + "` Message:" + messageHistory.getMessageRaw(), "CoreThread#0 - Performed by:" + auditLog.getUser().getAsMention());
 
+    }
+
+    @Override
+    public void onGuildMessageReactionAdd(GuildMessageReactionAddEvent event){
+        //Player onto lobby
     }
 
 

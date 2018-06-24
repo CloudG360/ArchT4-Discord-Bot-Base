@@ -3,14 +3,14 @@ package main.java.services;
 import com.carrotsearch.sizeof.RamUsageEstimator;
 import main.java.ClassTypes.OfflineMessage;
 import main.java.Main;
-import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.entities.TextChannel;
-import net.dv8tion.jda.core.entities.User;
+import net.dv8tion.jda.core.EmbedBuilder;
+import net.dv8tion.jda.core.entities.*;
 
+import java.awt.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 public abstract class BaseGameService extends Thread{
 
@@ -20,6 +20,7 @@ public abstract class BaseGameService extends Thread{
     protected String gameID;
     protected int lobbyID;
     protected Guild server;
+    protected Category gameCatagory;
 
     //User Viewable info
     protected String dispName;
@@ -28,6 +29,8 @@ public abstract class BaseGameService extends Thread{
 
     //Lobby data
     protected TextChannel lobbyJoinChannel;
+    protected TextChannel lobbyChannel;
+    protected Message joinMessage;
     protected List<User> lobbyUsers;
     protected int lobbyMinPlayers;
     protected int maxLobbySize;
@@ -49,9 +52,12 @@ public abstract class BaseGameService extends Thread{
     }
 
 
-    public void prepare(Guild guild){
+    public void prepare(Guild guild, Category gameCat){
         server = guild;
         idUnique = gameID+"#"+lobbyID+"#"+server.getId();
+
+        gameCatagory = gameCat;
+
     }
 
     @Override
@@ -61,22 +67,52 @@ public abstract class BaseGameService extends Thread{
 
     protected void lobbyScript(){
         gameStatus = "LOBBY-NEP";
+
+
         while(gameStatus.startsWith("LOBBY")){
-            if(Main.getResources().killInitiated == 0){
-                return;
-            }
-            if(lobbyUsers.size() >= lobbyMinPlayers){
-                gameStatus = "LOBBY-STARTING";
-                timer--;
+            try {
+                TimeUnit.SECONDS.wait(1);
+
+                if (Main.getResources().killInitiated == 0) {
+                    return;
+                }
+                if (timer <= 0) {
+                    return;
+                }
+                if (lobbyUsers.size() >= lobbyMinPlayers) {
+                    gameStatus = "LOBBY-STARTING";
+                    timer--;
+                    lobbyChannel.getManager().setTopic(":pencil: Lobby " + idUnique + "| Status: :clock3: Game Starting Soon ("+timer+"s) | Players: "+lobbyUsers.size()).complete();
+
+                }
+                if (lobbyUsers.size() < lobbyMinPlayers) {
+                    lobbyChannel.getManager().setTopic(":pencil: Lobby: " + idUnique + "| Status: Not Enough Players | Players:" + lobbyUsers.size()).complete();
+                }
+
+            } catch (Exception err){
+                lobbyChannel.sendMessage(new EmbedBuilder().setTitle("Lobby Error").setDescription("An error occured during countdown.").setColor(Color.blue).setImage("https://emojipedia-us.s3.amazonaws.com/thumbs/120/twitter/141/warning-sign_26a0.png").build()).queue();
             }
         }
     }
 
 
     protected void beginGameScript(){
+
+        lobbyChannel = (TextChannel) gameCatagory.createTextChannel("lobby-"+gameID.toLowerCase()+lobbyID).complete();
+
         while(lobbyUsers.size() < lobbyMinPlayers){
-            lobbyScript();
+            try {
+                lobbyScript();
+                TimeUnit.SECONDS.sleep(1);
+            } catch (Exception err){
+                return;
+            }
         }
+
+        if(Main.getResources().killInitiated==0){
+
+        }
+
 
 
 
