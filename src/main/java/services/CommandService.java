@@ -56,13 +56,6 @@ public class CommandService extends Thread {
 
     }
 
-    public void discardSelf(){
-        Main.getResources().coreService.SendDebugToHome("Point Reached", "#0003", "CommandKillSafe");
-        Main.getResources().services.remove(this);
-        Main.getResources().coreService.SendDebugToHome("Point Reached", "#0004", "CommandKillSafe");
-        this.interrupt();
-    }
-
 
 
 }

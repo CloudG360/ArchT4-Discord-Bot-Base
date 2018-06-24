@@ -30,6 +30,7 @@ public class Resources {
     public String prefix;
 
     public int killInitiated;
+    public CommandService commandKillParent;
 
     public boolean isActive;
 

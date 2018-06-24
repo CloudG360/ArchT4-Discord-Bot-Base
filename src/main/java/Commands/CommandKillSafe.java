@@ -2,6 +2,7 @@ package main.java.Commands;
 
 import main.java.Main;
 import main.java.services.CommandService;
+import main.java.services.JanitorService;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.Message;
 
@@ -26,9 +27,18 @@ public class CommandKillSafe extends CommandBase
             return false;
         }
 
+        message.getTextChannel().sendMessage(new EmbedBuilder().setColor(Color.red).setTitle("Initiated shutdown").setDescription("Initiated a bot-scope shutdown in STANDARD MODE. Standard mode provides 10 seconds for systems to end, before cleaning up them forcefully.").build()).queue();
+
+        Main.getResources().commandKillParent = service;
         Main.getResources().killInitiated = 1;
 
-        message.getTextChannel().sendMessage(new EmbedBuilder().setColor(Color.red).setTitle("Killing Systems").setDescription("Killing Bot Systems in mode: [SAFE MODE]").build()).queue();
+        message.getTextChannel().sendMessage(new EmbedBuilder().setColor(Color.red).setTitle("Killing Systems").setDescription("Killing Bot Systems in mode: [PRECISE MODE]").build()).complete();
+
+        JanitorService janitorService = new JanitorService();
+        janitorService.start();
+
+
+        message.getTextChannel().sendMessage(new EmbedBuilder().setColor(Color.red).setTitle("Killing Systems").setDescription("All Secondary Systems killed. Terminating primary systems.").build()).complete();
 
         System.exit(0);
 
