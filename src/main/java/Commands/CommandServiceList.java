@@ -29,8 +29,8 @@ public class CommandServiceList extends CommandBase
         EmbedBuilder eBuild = new EmbedBuilder();
         eBuild.setTitle("Service List").setDescription("Here's the list of currently active services");
         eBuild.setImage(Main.getResources().bot.getSelfUser().getAvatarUrl());
-        for (CommandService cmdS: Main.getResources().commandServices) {
-            eBuild.addField("CommandService#"+Main.getResources().commandServices.indexOf(cmdS), "Currently Active", true);
+        for (Thread serv: Main.getResources().services) {
+            eBuild.addField(serv.getName()+"#"+serv.getId(), "Currently Active", true);
         }
         eBuild.setColor(Color.orange);
 

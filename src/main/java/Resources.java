@@ -21,7 +21,7 @@ public class Resources {
     public Map<String, Object> botAdministratorConfig;
     public Map<String, OnlineStatus> onlineStatus;
 
-    public List<CommandService> commandServices;
+    public List<Thread> services;
     public List<CommandBase> commands;
 
     public List<BaseGameService> gameLobbies;
@@ -33,6 +33,7 @@ public class Resources {
     public String prefix;
 
     public int killInitiated;
+    public CommandService commandKillParent;
 
     public boolean isActive;
 
@@ -48,7 +49,7 @@ public class Resources {
         onlineStatus.put("DND", OnlineStatus.DO_NOT_DISTURB);
         onlineStatus.put("OFFLINE", OnlineStatus.INVISIBLE);
 
-        commandServices  = new ArrayList<>();
+        services  = new ArrayList<>();
         commands  = new ArrayList<>();
 
         coreService = new CoreService();

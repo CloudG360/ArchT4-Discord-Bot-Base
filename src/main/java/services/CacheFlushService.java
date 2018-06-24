@@ -20,6 +20,9 @@ public class CacheFlushService extends Thread{
     @Override
     public void run(){
 
+        this.setName("CacheTimedFlushService");
+        Main.getResources().services.add(this);
+
         while(Main.getResources().killInitiated == 0){
             try {
                 TimeUnit.MINUTES.sleep(Long.parseLong(Main.getResources().botAdministratorConfig.get("cache-flush_interval").toString()));
@@ -29,6 +32,9 @@ public class CacheFlushService extends Thread{
             } catch (Exception err){
             }
         }
+
+        Main.getResources().services.remove(this);
+        this.interrupt();
     }
 
 

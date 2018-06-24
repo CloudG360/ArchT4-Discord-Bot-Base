@@ -16,7 +16,6 @@ public class CommandService extends Thread {
     public Message queuedItem;
 
     public CommandService(){
-        Main.getResources().commandServices.add(this);
     }
 
     public void queueTask(Message message){
@@ -25,6 +24,8 @@ public class CommandService extends Thread {
 
     @Override
     public void run() {
+        this.setName("CommandService");
+        Main.getResources().services.add(this);
         processCommand();
     }
 
@@ -33,7 +34,7 @@ public class CommandService extends Thread {
 
         Message message = queuedItem;
 
-        Main.getResources().coreService.SendDebugToHome("Command Recieved!", "Identified as: " + message.getContentRaw().toLowerCase().split(" ")[0], "CommandProcessor#" + Main.getResources().commandServices.indexOf(this));
+        Main.getResources().coreService.SendDebugToHome("Command Recieved!", "Identified as: " + message.getContentRaw().toLowerCase().split(" ")[0], "CommandProcessor#" + Main.getResources().services.indexOf(this));
 
         String commandStart = message.getContentRaw().toLowerCase().split(" ")[0];
 
@@ -42,7 +43,7 @@ public class CommandService extends Thread {
             if(commandPrefixCombined.equals(commandStart)){
                 commandB.execute(message, this);
                 if(Main.getResources().killInitiated == 0) {
-                    Main.getResources().commandServices.remove(this);
+                    Main.getResources().services.remove(this);
                     this.interrupt();
                 }
                 return;
@@ -53,13 +54,6 @@ public class CommandService extends Thread {
 
         message.getTextChannel().sendMessage(new EmbedBuilder().setTitle("⚠ Command Error!").setDescription("Command not recognised.").setColor(Color.red).setImage(Main.getResources().bot.getSelfUser().getAvatarUrl()).build()).queue();
 
-    }
-
-    public void discardSelf(){
-        Main.getResources().coreService.SendDebugToHome("Point Reached", "#0003", "CommandKillSafe");
-        Main.getResources().commandServices.remove(this);
-        Main.getResources().coreService.SendDebugToHome("Point Reached", "#0004", "CommandKillSafe");
-        this.interrupt();
     }
 
 

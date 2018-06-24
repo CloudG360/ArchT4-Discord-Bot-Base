@@ -15,7 +15,6 @@ public class CacheService extends Thread{
 
     public CacheService(){
         cacheTree = new HashMap<String, Object>();
-
         setupCaches();
     }
 
@@ -26,6 +25,9 @@ public class CacheService extends Thread{
 
     @Override
     public void run(){
+
+        this.setName("CacheService");
+        Main.getResources().services.add(this);
 
         cacheTree = new HashMap<String, Object>();
 
@@ -39,6 +41,9 @@ public class CacheService extends Thread{
 
             }
         }
+
+        Main.getResources().services.remove(this);
+        this.interrupt();
 
     }
 
