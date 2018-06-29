@@ -86,6 +86,7 @@ public class Main {
         getResources().addCommand(new CommandDM("dmuser","!dmuser <@user> <Title> -Cut- <Description>"));
         getResources().addCommand(new CommandKillSafe("shutdown", "!shutdown"));
         getResources().addCommand(new CommandColourChangeRole("rainbow", "!rainbow @role"));
+        getResources().addCommand(new CommandStartTestGame("starttest", "!starttest"));
 
         //----Databases----
 

@@ -51,6 +51,7 @@ public class Resources {
 
         services  = new ArrayList<>();
         commands  = new ArrayList<>();
+        gameLobbies = new ArrayList<>();
 
         coreService = new CoreService();
 
