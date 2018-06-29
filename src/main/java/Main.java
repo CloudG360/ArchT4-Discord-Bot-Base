@@ -1,7 +1,6 @@
 package main.java;
 
-import main.java.Commands.*;
-import main.java.services.CoreService;
+import main.java.commands.*;
 import net.dv8tion.jda.core.*;
 import net.dv8tion.jda.core.entities.Game;
 
@@ -10,7 +9,6 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.Reader;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -79,7 +77,7 @@ public class Main {
             System.out.println("An error occured during the connection between the API and the bot.");
         }
 
-        //----Commands----
+        //----commands----
         getResources().addCommand(new CommandBotInfo("botinfo","!botinfo"));
         getResources().addCommand(new CommandOccupyThread("occupy","!occupy"));
         getResources().addCommand(new CommandServiceList("services","!services"));

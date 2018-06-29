@@ -1,9 +1,8 @@
-package main.java.ClassTypes;
+package main.java.miscclasses;
 
 import net.dv8tion.jda.core.entities.Role;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.entities.User;
-import net.dv8tion.jda.core.requests.Route;
 
 import java.util.List;
 

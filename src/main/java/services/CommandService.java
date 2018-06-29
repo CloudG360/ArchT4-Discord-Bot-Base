@@ -1,15 +1,11 @@
 package main.java.services;
 
-import main.java.Commands.CommandBase;
+import main.java.commands.CommandBase;
 import main.java.Main;
-import main.java.Resources;
 import net.dv8tion.jda.core.EmbedBuilder;
-import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.entities.MessageEmbed;
 
 import java.awt.*;
-import java.util.*;
 
 public class CommandService extends Thread {
 

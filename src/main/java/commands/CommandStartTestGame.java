@@ -1,13 +1,8 @@
-package main.java.Commands;
+package main.java.commands;
 
-import main.java.Main;
 import main.java.services.CommandService;
-import main.java.services.TestGameService;
-import net.dv8tion.jda.core.EmbedBuilder;
+import main.java.services.gameservices.TestGameService;
 import net.dv8tion.jda.core.entities.Message;
-
-import java.awt.*;
-import java.util.List;
 
 public class CommandStartTestGame extends CommandBase
 {

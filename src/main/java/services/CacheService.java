@@ -1,12 +1,11 @@
 package main.java.services;
 
-import main.java.ClassTypes.OfflineMessage;
+import main.java.miscclasses.OfflineMessage;
 import main.java.Main;
-import net.dv8tion.jda.core.entities.Message;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
+
 import com.carrotsearch.sizeof.RamUsageEstimator;
 
 public class CacheService extends Thread{

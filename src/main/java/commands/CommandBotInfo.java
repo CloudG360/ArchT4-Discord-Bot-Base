@@ -1,4 +1,4 @@
-package main.java.Commands;
+package main.java.commands;
 
 import com.carrotsearch.sizeof.RamUsageEstimator;
 import main.java.Main;
@@ -7,7 +7,6 @@ import main.java.services.CoreService;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.entities.MessageEmbed;
 
 import java.awt.*;
 import java.util.ArrayList;

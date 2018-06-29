@@ -1,14 +1,10 @@
 package main.java.services;
 
-import com.carrotsearch.sizeof.RamUsageEstimator;
-import com.mysql.cj.util.TimeUtil;
-import main.java.ClassTypes.OfflineMessage;
 import main.java.Main;
 import net.dv8tion.jda.core.entities.Role;
 
 import java.awt.*;
 import java.util.*;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class RoleColourService extends Thread{

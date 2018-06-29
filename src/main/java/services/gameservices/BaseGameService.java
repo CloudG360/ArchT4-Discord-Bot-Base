@@ -1,20 +1,15 @@
-package main.java.services;
+package main.java.services.gameservices;
 
-import com.carrotsearch.sizeof.RamUsageEstimator;
-import main.java.ClassTypes.OfflineMessage;
 import main.java.Main;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.*;
-import net.dv8tion.jda.core.events.emote.update.EmoteUpdateNameEvent;
 import net.dv8tion.jda.core.managers.GuildController;
-import net.dv8tion.jda.core.managers.RoleManager;
 
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 public abstract class BaseGameService extends Thread{
@@ -196,39 +191,168 @@ public abstract class BaseGameService extends Thread{
         this.interrupt();
     }
 
-    //uniqueID components
-    public int getLobbyID() {
-        return lobbyID;
+    @Override
+    public String toString() {
+        return idUnique;
+    }
+
+    public String getIdUnique() {
+        return idUnique;
+    }
+
+    public void setIdUnique(String idUnique) {
+        this.idUnique = idUnique;
     }
 
     public String getGameID() {
         return gameID;
     }
 
-    //Info
-    public String getDisplayName() {
+    public void setGameID(String gameID) {
+        this.gameID = gameID;
+    }
+
+    public int getLobbyID() {
+        return lobbyID;
+    }
+
+    public void setLobbyID(int lobbyID) {
+        this.lobbyID = lobbyID;
+    }
+
+    public Guild getServer() {
+        return server;
+    }
+
+    public void setServer(Guild server) {
+        this.server = server;
+    }
+
+    public Category getGameCatagory() {
+        return gameCatagory;
+    }
+
+    public void setGameCatagory(Category gameCatagory) {
+        this.gameCatagory = gameCatagory;
+    }
+
+    public List<TextChannel> getGameChannels() {
+        return gameChannels;
+    }
+
+    public void setGameChannels(List<TextChannel> gameChannels) {
+        this.gameChannels = gameChannels;
+    }
+
+    public HashMap<String, Role> getGameroles() {
+        return gameroles;
+    }
+
+    public void setGameroles(HashMap<String, Role> gameroles) {
+        this.gameroles = gameroles;
+    }
+
+    public String getDispName() {
         return dispName;
+    }
+
+    public void setDispName(String dispName) {
+        this.dispName = dispName;
     }
 
     public String getDesc() {
         return desc;
     }
 
-    public String getIconURL() {
+    public void setDesc(String desc) {
+        this.desc = desc;
+    }
+
+    public String getIcon() {
         return icon;
     }
 
-    @Override
-    public String toString() {
-        return idUnique;
+    public void setIcon(String icon) {
+        this.icon = icon;
     }
 
-    //Lobby
-    public int getLobbyMinSize() {
+    public TextChannel getLobbyJoinChannel() {
+        return lobbyJoinChannel;
+    }
+
+    public void setLobbyJoinChannel(TextChannel lobbyJoinChannel) {
+        this.lobbyJoinChannel = lobbyJoinChannel;
+    }
+
+    public TextChannel getLobbyChannel() {
+        return lobbyChannel;
+    }
+
+    public void setLobbyChannel(TextChannel lobbyChannel) {
+        this.lobbyChannel = lobbyChannel;
+    }
+
+    public Message getJoinMessage() {
+        return joinMessage;
+    }
+
+    public void setJoinMessage(Message joinMessage) {
+        this.joinMessage = joinMessage;
+    }
+
+    public Role getLobbyRole() {
+        return lobbyRole;
+    }
+
+    public void setLobbyRole(Role lobbyRole) {
+        this.lobbyRole = lobbyRole;
+    }
+
+    public List<User> getLobbyUsers() {
+        return lobbyUsers;
+    }
+
+    public void setLobbyUsers(List<User> lobbyUsers) {
+        this.lobbyUsers = lobbyUsers;
+    }
+
+    public int getLobbyMinPlayers() {
         return lobbyMinPlayers;
+    }
+
+    public void setLobbyMinPlayers(int lobbyMinPlayers) {
+        this.lobbyMinPlayers = lobbyMinPlayers;
     }
 
     public int getMaxLobbySize() {
         return maxLobbySize;
+    }
+
+    public void setMaxLobbySize(int maxLobbySize) {
+        this.maxLobbySize = maxLobbySize;
+    }
+
+    public int getTimerStart() {
+        return timerStart;
+    }
+
+    public void setTimerStart(int timerStart) {
+        this.timerStart = timerStart;
+    }
+
+    public int getTimer() {
+        return timer;
+    }
+
+    public void setTimer(int timer) {
+        this.timer = timer;
+    }
+
+    public String getGameStatus() {
+        return gameStatus;
+    }
+
+    public void setGameStatus(String gameStatus) {
+        this.gameStatus = gameStatus;
     }
 }

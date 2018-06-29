@@ -1,6 +1,5 @@
 package main.java.services;
 
-import main.java.Commands.CommandBase;
 import main.java.Main;
 
 public class JanitorService extends Thread {

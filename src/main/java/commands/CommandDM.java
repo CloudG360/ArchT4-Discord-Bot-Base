@@ -1,4 +1,4 @@
-package main.java.Commands;
+package main.java.commands;
 
 import main.java.Main;
 import main.java.services.CommandService;

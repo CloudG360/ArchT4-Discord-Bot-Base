@@ -1,28 +1,22 @@
 package main.java.services;
 
-import main.java.ClassTypes.OfflineMessage;
+import main.java.miscclasses.OfflineMessage;
 import main.java.Main;
-import main.java.Resources;
+import main.java.services.gameservices.BaseGameService;
 import net.dv8tion.jda.core.EmbedBuilder;
-import net.dv8tion.jda.core.audit.ActionType;
 import net.dv8tion.jda.core.audit.AuditLogEntry;
-import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.events.message.guild.GuildMessageDeleteEvent;
 import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.core.events.message.guild.react.GuildMessageReactionAddEvent;
-import net.dv8tion.jda.core.hooks.EventListener;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
 import net.dv8tion.jda.core.managers.GuildController;
-import net.dv8tion.jda.core.requests.restaction.pagination.AuditLogPaginationAction;
 
-import java.awt.*;
+
 import java.time.LocalDateTime;
-import java.util.ArrayList;
+import java.awt.Color;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Consumer;
 
 public class CoreService extends ListenerAdapter {
 
@@ -64,16 +58,18 @@ public class CoreService extends ListenerAdapter {
             String idUnique = event.getChannel().getName().substring(5);
             for(BaseGameService service: Main.getResources().gameLobbies){
                 System.out.println("POINT 2");
-                System.out.println(idUnique + "/" + service.idUnique);
-                if(service.maxLobbySize > service.lobbyUsers.size()) {
+                System.out.println(idUnique + "/" + service.toString());
+                if(service.getMaxLobbySize() > service.getLobbyUsers().size()) {
                     System.out.println("POINT 3");
-                    if (service.idUnique.equals(idUnique)) {
+                    if (service.toString().equals(idUnique)) {
                         System.out.println("POINT 4");
-                        if(service.server == event.getGuild()) {
+                        if(service.getServer() == event.getGuild()) {
                             System.out.println("POINT 5");
                             GuildController ctrl = new GuildController(event.getGuild());
                             ctrl.addRolesToMember(event.getMember(), service.lobbyRole).complete();
-                            service.lobbyUsers.add(event.getUser());
+                            List lobbyUsers = service.getLobbyUsers();
+                            lobbyUsers.add(event.getUser());
+                            service.setLobbyUsers(lobbyUsers);
                             return;
                         }
                     }

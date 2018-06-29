@@ -1,4 +1,4 @@
-package main.java.Commands;
+package main.java.commands;
 
 import main.java.Main;
 import main.java.services.CommandService;
@@ -8,7 +8,6 @@ import net.dv8tion.jda.core.entities.Message;
 
 import java.awt.*;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 public class CommandKillSafe extends CommandBase
 {

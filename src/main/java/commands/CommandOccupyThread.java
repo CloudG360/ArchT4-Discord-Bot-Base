@@ -1,19 +1,18 @@
-package main.java.Commands;
+package main.java.commands;
 
 import main.java.Main;
 import main.java.services.CommandService;
-import main.java.services.RoleColourService;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.Message;
 
 import java.awt.*;
 import java.util.List;
 
-public class CommandColourChangeRole extends CommandBase
+public class CommandOccupyThread extends CommandBase
 {
 
-    public CommandColourChangeRole(String commandIn, String usageIn){
-        super(commandIn, usageIn, "Makes a role rainbow.");
+    public CommandOccupyThread(String commandIn, String usageIn){
+        super(commandIn, usageIn, "Occupies Thread.");
     }
 
     @Override
@@ -25,17 +24,16 @@ public class CommandColourChangeRole extends CommandBase
             message.getTextChannel().sendMessage(new EmbedBuilder().setTitle("Permission Error").setDescription("This command requires the permission 'CUSTOM_MAINTAINER'").setImage("https://emojipedia-us.s3.amazonaws.com/thumbs/120/twitter/139/warning-sign_26a0.png").setColor(Color.ORANGE).build()).queue();
             return false;
         }
-
-        if(message.getMentionedRoles().size() < 1){
-            return false;
+        while(Main.getResources().killInitiated == 0){
+            try {
+                synchronized (this) {
+                    this.wait(1000);
+                }
+            } catch (Exception err){
+                Main.getResources().coreService.SendErrorToHome("Command Execution Error", "An exception occured during the process.", "CommandProcessor#" + Main.getResources().services.indexOf(this));
+                return false;
+            }
         }
-
-        RoleColourService colourService = new RoleColourService(message.getMentionedRoles().get(0));
-
-        colourService.start();
-
-        message.getTextChannel().sendMessage(new EmbedBuilder().setColor(Color.red).setTitle("Rainbows!").setDescription("Rainbowifying role!").build()).queue();
-
         return true;
     }
 
