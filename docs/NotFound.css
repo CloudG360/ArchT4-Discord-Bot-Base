@@ -49,9 +49,11 @@ body {
 	
 }
 .links{
-	margin-left:60px;
+	float:right;
+}
+.links a{
 	padding:30px;
-    float: right;
+    float: left;
     display: block;
 	background-color:#2f2f3a;
     color: #f1f1f1;
