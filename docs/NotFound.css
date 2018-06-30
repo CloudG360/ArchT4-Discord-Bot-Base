@@ -1,4 +1,6 @@
 body {
+	
+	height:100%;
 
 	background-color: #f7f7f7;
 	margin:0;
@@ -6,8 +8,6 @@ body {
 	box-sizing: border-box;
 	
 	font-family: Calibri;
-	
-	min-width:600px;
 }
 
 .decoration-right-blue{
@@ -45,14 +45,18 @@ body {
 	color: #ffffff;
 	position:absolute;
 	padding-left: 10px;
-	margin-right:60px;
 	
 }
+
 .links{
 	float:right;
+	margin-right:10px
 }
 .links a{
-	padding:30px;
+	padding-top:30px;
+	padding-bottom: 30px;
+	padding-left: 5px;
+	padding-right:5px;
     float: left;
     display: block;
 	background-color:#2f2f3a;
@@ -60,16 +64,27 @@ body {
     vertical-align: center;
 	text-align: center-left;
 }
+
 .links a:hover {
-	padding:30px;
+	padding-top:30px;
+	padding-bottom: 30px;
     background-color: #ffffff;
     color: black;
 }
 
+footer {
+	display: block;
+	height:120px;
+	float:bottom;
+	position:relative;
+	background-color:#3f3f44;
+
+}
+
 #content{
 	
-	text-align: center;
 	vertical-align: center;
+	text-align:center;
 	float: center;
 	
 	font-size:20px;
@@ -93,31 +108,14 @@ body {
 
 }
 
-#content p {
-
-}
-
 #content img{
+	
+	mix-blend-mode:multiply;
+	height:50%;
 
-	width:25%;
-	mix-blend-mode: multiply;
-
 }
 
-#Link-Home{
-	padding-left: 5px;
-	padding-right:5px;
-}
-#Link-About{
-	padding-left: 5px;
-	padding-right:5px;
-}
-#Link-Downloads{
-	padding-left: 5px;
-	padding-right:5px;
-}
-#Link-Source{
-	padding-left: 5px;
-	padding-right:5px;
+#content p {
+	
 }
 
