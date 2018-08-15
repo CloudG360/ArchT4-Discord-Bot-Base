@@ -22,6 +22,14 @@ public abstract class BaseGameService extends Thread{
     protected Guild server;
     protected Category gameCatagory;
 
+    //These are variables intended only intended to be changed by the
+    //Divided up by ";" - Format: ARG-NAME=VALUE; - Classes which extend this can look for additional args.
+    protected String[] args;
+
+    protected boolean lobbyTimer = true;
+    protected boolean eventMode = false;
+    protected String gameType = "main";
+
     //In Game
     public List<TextChannel> gameChannels;
     public HashMap<String, Role> gameroles;
@@ -46,10 +54,16 @@ public abstract class BaseGameService extends Thread{
     //General Data
     protected String gameStatus;
 
+    //Logging
+    public List<String> presetupErrors;
 
-    public BaseGameService(String id, int minLobbyStart, int maxLobSize, int timerSize){
+
+    public BaseGameService(String id, int minLobbyStart, int maxLobSize, int timerSize, String[] bootArgs){
+
+        args = bootArgs;
+        presetupErrors = new ArrayList<>();
+
         gameID = id;
-
 
         lobbyID = Main.getResources().gameLobbies.size() + 1;
         idUnique = gameID+"-"+lobbyID;
@@ -67,6 +81,28 @@ public abstract class BaseGameService extends Thread{
         desc = "Welcome to a TEST lobby! This is a non-permanent game designed to allow developers to test the play script.";
         dispName = "TEST_LOBBY";
         icon = "https://emojipedia-us.s3.amazonaws.com/thumbs/120/google/119/construction-worker_1f477.png";
+
+        for (String bootArg: args) {
+            if(bootArg.startsWith("minPlayerLimit")){
+                if(bootArg.split("=").length==2){
+                    lobbyMinPlayers=Integer.parseInt(bootArg.split("=")[1]);
+                }else if(bootArg.split("=").length==1){
+                    lobbyMinPlayers=1;
+                } else {
+                    presetupErrors.add("ArgumentError; Incorrect usage of the 'minPlayerLimit' argument.");
+                }
+            }
+
+            if(bootArg.startsWith("maxPlayerLimit")){
+                if(bootArg.split("=").length==2){
+                    maxLobbySize=Integer.parseInt(bootArg.split("=")[1]);
+                }else if(bootArg.split("=").length==1){
+                    maxLobbySize=100000;
+                } else {
+                    presetupErrors.add("ArgumentError; Incorrect usage of the 'maxPlayerLimit' argument.");
+                }
+            }
+        }
     }
 
 
