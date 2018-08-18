@@ -12,7 +12,7 @@ import java.util.List;
 
 public class DataService {
 
-    public Object retriveEntry(String db, String table, String id, String columnRequest){
+    public ResultSet retriveEntry(String db, String table, String id){
         MysqlDataSource datSource = getDataSource();
         if(datSource == null){
             return null;
@@ -31,11 +31,9 @@ public class DataService {
 
             ResultSet results = statement.executeQuery(sql);
 
-            Object returnVal = results.getObject(columnRequest);
-
             con.close();
 
-            return returnVal;
+            return results;
         } catch (Exception err){
             return null;
         }
