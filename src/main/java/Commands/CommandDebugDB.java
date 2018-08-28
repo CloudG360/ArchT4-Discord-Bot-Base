@@ -1,5 +1,6 @@
 package main.java.Commands;
 
+import com.mysql.cj.jdbc.MysqlDataSource;
 import main.java.Main;
 import main.java.services.CommandService;
 import main.java.services.DataService;
@@ -30,7 +31,7 @@ public class CommandDebugDB extends CommandBase
 
         Main.getResources().coreService.SendInfoToHome("Debug Command Initiated.", "Testing mySQL Databases", "Sent by "+message.getAuthor().getAsMention());
 
-        DataService dserv = new DataService();
+        DataService dserv = new DataService("debug");
 
         Main.getResources().coreService.SendInfoToHome("DB TEST [STAGE 1/4]", "Testing mySQL Database INSERT", "Sent by "+message.getAuthor().getAsMention());
 
@@ -43,36 +44,36 @@ public class CommandDebugDB extends CommandBase
         values.add("Welcome to...");
         values.add("My Crib.");
 
-        dserv.insertEntry("debug", "testdb", "testdb_entry_1",columns, values);
-        dserv.insertEntry("debug", "testdb", "testdb_entry_2",columns, values);
-        dserv.insertEntry("debug", "testdb", "testdb_entry_3",columns, values);
+        dserv.insertEntry( "dbtest", "testdb_entry_1",columns, values);
+        dserv.insertEntry( "dbtest", "testdb_entry_2",columns, values);
+        dserv.insertEntry( "dbtest", "testdb_entry_3",columns, values);
 
         Main.getResources().coreService.SendInfoToHome("DB TEST [STAGE 2/4]", "Testing mySQL Database READ [1/2]", "Sent by "+message.getAuthor().getAsMention());
 
-        ResultSet rs1 = dserv.retriveEntry("debug", "dbtest", "testdb_entry_1");
-        ResultSet rs2 = dserv.retriveEntry("debug", "dbtest", "testdb_entry_1");
-        ResultSet rs3 = dserv.retriveEntry("debug", "dbtest", "testdb_entry_1");
+        ResultSet rs1 = dserv.retriveEntry( "dbtest", "testdb_entry_1");
+        ResultSet rs2 = dserv.retriveEntry( "dbtest", "testdb_entry_2");
+        ResultSet rs3 = dserv.retriveEntry( "dbtest", "testdb_entry_3");
 
         if(rs1 == null || rs2 == null || rs3 == null){
-            Main.getResources().coreService.SendInfoToHome("DB TEST [STAGE 2/4]", "READ test FAILURE [1/2]", "Sent by "+message.getAuthor().getAsMention());
+            Main.getResources().coreService.SendErrorToHome("DB TEST [STAGE 2/4]", "READ test FAILURE [1/2]", "Sent by "+message.getAuthor().getAsMention());
         }
 
         Main.getResources().coreService.SendInfoToHome("DB TEST [STAGE 3/4]", "Testing mySQL Database EDIT", "Sent by "+message.getAuthor().getAsMention());
 
-        boolean s1 = dserv.editEntry("debug", "dbtest", "testdb_entry_1", "val1", "test");
-        boolean s2 = dserv.editEntry("debug", "dbtest", "testdb_entry_1", "val2", "test2");
-        boolean s3 = dserv.editEntry("debug", "dbtest", "testdb_entry_1", "val3", "test3");
+        boolean s1 = dserv.editEntry( "dbtest", "testdb_entry_1", "val1", "test");
+        boolean s2 = dserv.editEntry( "dbtest", "testdb_entry_1", "val2", "test2");
+        boolean s3 = dserv.editEntry( "dbtest", "testdb_entry_1", "val3", "test3");
 
         if(!s1||!s2 ||!s3){
-            Main.getResources().coreService.SendInfoToHome("DB TEST [STAGE 3/4]", "EDIT test FAILURE", "Sent by "+message.getAuthor().getAsMention());
+            Main.getResources().coreService.SendErrorToHome("DB TEST [STAGE 3/4]", "EDIT test FAILURE", "Sent by "+message.getAuthor().getAsMention());
         }
 
         Main.getResources().coreService.SendInfoToHome("DB TEST [STAGE 4/4]", "Testing mySQL Database READ [2/2]", "Sent by "+message.getAuthor().getAsMention());
 
-        ResultSet rs4 = dserv.retriveEntry("debug", "testdb", "testdb_entry_1");
+        ResultSet rs4 = dserv.retriveEntry( "dbtest", "testdb_entry_1");
 
         if(rs1 == null){
-            Main.getResources().coreService.SendInfoToHome("DB TEST [STAGE 4/4]", "READ test FAILURE [2/2]", "Sent by "+message.getAuthor().getAsMention());
+            Main.getResources().coreService.SendErrorToHome("DB TEST [STAGE 4/4]", "READ test FAILURE [2/2]", "Sent by "+message.getAuthor().getAsMention());
         }
 
         return true;

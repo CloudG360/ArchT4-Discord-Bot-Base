@@ -1,67 +1,59 @@
 package main.java.services;
 
-import com.mysql.cj.jdbc.MysqlDataSource;
-
 import main.java.Main;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.List;
 
 
 public class DataService {
 
-    public ResultSet retriveEntry(String db, String table, String id){
-        MysqlDataSource datSource = getDataSource();
-        if(datSource == null){
+    private Connection con = null;
+
+    public DataService (String dbname){
+        connectToDB(dbname);
+    }
+
+    public ResultSet retriveEntry(String table, String id){
+
+        if(con == null){
             return null;
         }
 
-        Connection con = null;
-
         try {
-            con = datSource.getConnection();
 
             //Process Data
 
             Statement statement = con.createStatement();
 
-            String sql = "SELECT * FROM " + db + "." + table + " WHERE id="+id;
+            String sql = "SELECT * FROM "+ table + " WHERE id='"+id+"';";
 
+            Main.getResources().coreService.SendInfoToHome("SQL DB INTERACTION", sql, "---");
             ResultSet results = statement.executeQuery(sql);
 
-            con.close();
 
             return results;
         } catch (Exception err){
             return null;
         }
-
-
-        //There will be a return statement.
     }
 
-    public boolean editEntry(String db, String table, String id, String key, String val){
-        MysqlDataSource datSource = getDataSource();
-        if(datSource == null){
+    public boolean editEntry(String table, String id, String key, String val){
+        if(con == null){
             return false;
         }
 
-        Connection con = null;
-
         try {
-            con = datSource.getConnection();
 
             //Process Data
 
             Statement statement = con.createStatement();
 
-            String sql = "UPDATE " +db+"."+table + " SET "+key+"="+val+" WHERE id="+id;
+            String sql = "UPDATE "+table+" SET "+key+"='"+val+"' WHERE id='"+id+"';";
 
+            Main.getResources().coreService.SendInfoToHome("SQL DB INTERACTION", sql, "---");
             statement.execute(sql);
 
-            con.close();
 
         } catch (Exception err){
             return false;
@@ -71,38 +63,35 @@ public class DataService {
         //There will be a return statement.
     }
 
-    public boolean insertEntry(String db, String table, String id, List<String> columnNames, List<String> values){
-        MysqlDataSource datSource = getDataSource();
-        if(datSource == null){
+    public boolean insertEntry(String table, String id, List<String> columnNames, List<String> values){
+        if(con == null){
             return false;
         }
 
-        Connection con = null;
 
         try {
-            con = datSource.getConnection();
 
             //Process Data
 
             Statement statement = con.createStatement();
 
-            String sql = "INSERT INTO "+db+"."+table+" (id";
+            String sql = "INSERT INTO "+table+" (id";
 
             for (String cname: columnNames) {
                 sql = sql.concat(", "+cname);
             }
 
-            sql = sql.concat(") VALUES ('"+id+"',");
+            sql = sql.concat(") VALUES ('"+id+"'");
 
             for (String vname: values) {
                 sql = sql.concat(", '"+vname+"'");
             }
 
-            sql = sql.concat(")");
+            sql = sql.concat(");");
+            Main.getResources().coreService.SendInfoToHome("SQL DB INTERACTION", sql, "---");
 
             statement.execute(sql);
 
-            con.close();
 
         } catch (Exception err){
             return false;
@@ -112,19 +101,34 @@ public class DataService {
         //There will be a return statement.
     }
 
-    public MysqlDataSource getDataSource(){
-        MysqlDataSource dataSource = new MysqlDataSource();
-        dataSource.setUser(Main.getResources().botAdministratorConfig.get("sql-username").toString());
-        dataSource.setPassword(Main.getResources().botAdministratorConfig.get("#sql-password").toString());
+    public void connectToDB(String dbname){
         try {
-            dataSource.setAutoReconnect(true);
-        } catch (Exception err){
-            return null;
+            Class.forName("com.mysql.jdbc.Driver");
+        } catch (ClassNotFoundException err){
+            Main.getResources().coreService.SendErrorToHome("DBAccess Error", "ClassNotFound: com.mysql.jdbc.Driver", "connectToDB() - DataService");
+            return;
         }
 
+        String username = Main.getResources().botAdministratorConfig.get("sql-username").toString();
+        String password =Main.getResources().botAdministratorConfig.get("#sql-password").toString();
+        String ip = Main.getResources().botAdministratorConfig.get("#sql-servername").toString();
 
-        dataSource.setServerName(Main.getResources().botAdministratorConfig.get("sql-servername").toString());
-        return dataSource;
+
+        try {
+            con = DriverManager.getConnection("jdbc:mysql://"+ip+"/"+dbname, username, password);
+        } catch (SQLException err) {
+            Main.getResources().coreService.SendErrorToHome("DBAccess Error", "An SQLException occurred while connecting to a DB", "connectToDB() - DataService");
+        }
+
+    }
+
+    public void cleanup(){
+        try {
+            con.close();
+        } catch (SQLException err){
+            Main.getResources().coreService.SendErrorToHome("DBClose Error", "An SQLException occurred while closing a connection to a DB", "cleanup() - DataService");
+
+        }
     }
 
 }
